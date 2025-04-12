@@ -8,21 +8,51 @@
   </head>
   <body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs="sourceType: webcam;">
+      
       <!-- Marcador Hiro -->
       <a-marker preset="hiro">
-        <!-- Modelo 3D de Gôndola ou produto -->
+
+        <!-- Gôndola -->
         <a-gltf-model
-          src="https://cdn.glitch.global/0a4976cf-50a4-4960-86ae-eaaffabb9833/prateleira.glb?v=1744429080079"
-           position="0 0 0"
-          scale="0.2 0.2 0.2"
+          src="https://cdn.glitch.global/0a4976cf-50a4-4960-86ae-eaaffabb9833/prateleira2.glb?v=1744429524348"
+          position="0 0 0"
+          scale="0.02 0.02 0.02"
           rotation="0 180 0"
         ></a-gltf-model>
+
+        <!-- Produto (caixa representando suco) -->
+        <a-box
+          position="0 0.5 0.2"
+          depth="0.1"
+          height="0.2"
+          width="0.1"
+          color="orange"
+           rotation="0 0 0" 
+               animation="property: rotation; to: 0 360 0; loop: true; dur: 5000"
+        ></a-box>
+
+        <!-- Caixa de nome do produto -->
+        <a-plane
+          position="0 0.7 0.2"
+          width="0.3"
+          height="0.1"
+          color="#ffffff"
+        >
+          <a-text
+            value="Suco de Laranja"
+            align="center"
+            color="#000000"
+            width="1.5"
+            position="0 0 0.01"
+          ></a-text>
+        </a-plane>
+
       </a-marker>
 
-      <!-- Câmera -->
       <a-entity camera></a-entity>
     </a-scene>
   </body>
 </html>
+
 
 
