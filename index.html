@@ -1,106 +1,27 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>AR.js + Three.js Puro</title>
-    <style>
-      body { margin: 0; overflow: hidden; }
-      canvas { position: absolute; top: 0; left: 0; }
-    </style>
+    <meta charset="utf-8" />
+    <title>AR.js Supermercado</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
   </head>
-  <body>
-    <!-- Libs -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/three.js/build/ar.min.js"></script>
+  <body style="margin: 0; overflow: hidden;">
+    <a-scene embedded arjs="sourceType: webcam;">
+      <!-- Marcador Hiro -->
+      <a-marker preset="hiro">
+        <!-- Modelo 3D de Gôndola ou produto -->
+        <a-gltf-model
+          src="https://cdn.glitch.global/f62f8324-00fc-4a4e-9e7b-6a1b143dd267/gondola.glb?v=1712852569135"
+          position="0 0 0"
+          scale="0.5 0.5 0.5"
+          rotation="0 180 0"
+        ></a-gltf-model>
+      </a-marker>
 
-    <script>
-      let scene, camera, renderer, markerRoot, cube;
-
-      init();
-      animate();
-
-      function init() {
-        scene = new THREE.Scene();
-
-        camera = new THREE.Camera();
-        scene.add(camera);
-
-        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x000000, 0); // fundo transparente
-        document.body.appendChild(renderer.domElement);
-
-        // Fonte de vídeo
-        let arSource = new THREEx.ArToolkitSource({ sourceType: 'webcam' });
-        arSource.init(() => {
-          resize();
-        });
-
-        window.addEventListener('resize', () => {
-          resize();
-        });
-
-        function resize() {
-          arSource.onResizeElement();
-          arSource.copyElementSizeTo(renderer.domElement);
-          if (arContext.arController !== null) {
-            arSource.copyElementSizeTo(arContext.arController.canvas);
-          }
-        }
-
-        // AR Toolkit
-        let arContext = new THREEx.ArToolkitContext({
-          cameraParametersUrl: 'https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.2/data/data/camera_para.dat',
-          detectionMode: 'mono'
-        });
-
-        arContext.init(() => {
-          camera.projectionMatrix.copy(arContext.getProjectionMatrix());
-        });
-
-        // Marker Hiro
-        markerRoot = new THREE.Group();
-        scene.add(markerRoot);
-
-        new THREEx.ArMarkerControls(arContext, markerRoot, {
-          type: 'pattern',
-          patternUrl: 'https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.2/data/data/patt.hiro'
-        });
-
-        // Bloco 3D
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshNormalMaterial();
-        cube = new THREE.Mesh(geometry, material);
-        cube.position.y = 0.5;
-        markerRoot.add(cube);
-
-        // Loop de AR
-        function update() {
-          if (arSource.ready === false) return;
-          arContext.update(arSource.domElement);
-        }
-
-        function render() {
-          renderer.render(scene, camera);
-        }
-
-        function loop() {
-          requestAnimationFrame(loop);
-          update();
-          render();
-        }
-
-        loop();
-      }
-
-      function animate() {
-        requestAnimationFrame(animate);
-        if (cube) {
-          cube.rotation.y += 0.01;
-          cube.rotation.x += 0.005;
-        }
-      }
-    </script>
+      <!-- Câmera -->
+      <a-entity camera></a-entity>
+    </a-scene>
   </body>
 </html>
 
