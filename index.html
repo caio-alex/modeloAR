@@ -30,6 +30,7 @@
           width="0.1"
           color="orange"
           rotation="180 180 0"
+          class="clickable"
         ></a-box>
 
         <!-- Caixa de nome do produto -->
@@ -50,38 +51,30 @@
 
       </a-marker>
 
-      <a-entity camera></a-entity>
+      <!-- Câmera com cursor para clique -->
+      <a-entity camera>
+        <a-cursor
+          fuse="true"
+          fuse-timeout="500"
+          raycaster="objects: .clickable"
+        ></a-cursor>
+      </a-entity>
+
     </a-scene>
 
     <script>
-      // Função para aumentar a escala do produto
-      function aumentarProduto() {
-        const produto = document.querySelector('#produto');
-        let scale = produto.getAttribute('scale');
-        produto.setAttribute('scale', `${scale.x * 1.5} ${scale.y * 1.5} ${scale.z * 1.5}`);
-      }
-
-      // Função para mover a gôndola
-      function moverGondola() {
-        const gondola = document.querySelector('#gondola');
-        gondola.setAttribute('position', '0 0.5 1'); // Mover para frente
-      }
-
-      // Função para rotacionar o produto
-      function rotacionarProduto() {
-        const produto = document.querySelector('#produto');
-        let rotation = produto.getAttribute('rotation');
-        produto.setAttribute('rotation', `${rotation.x} ${rotation.y + 45} ${rotation.z}`); // Rotaciona 45 graus no eixo Y
-      }
-
-      // Adicionando eventos de clique
-      document.querySelector('#produto').addEventListener('click', aumentarProduto);
-      document.querySelector('#gondola').addEventListener('click', moverGondola);
-      document.querySelector('#produto').addEventListener('dblclick', rotacionarProduto);  // Rotaciona o produto com um duplo clique
+      document.querySelector('a-scene').addEventListener('loaded', function () {
+        const box = document.querySelector('.clickable');
+        if (box) {
+          box.addEventListener('click', function () {
+            box.setAttribute('color', 'blue');
+            console.log('Objeto clicado!');
+          });
+        }
+      });
     </script>
   </body>
 </html>
-
 
 
 
