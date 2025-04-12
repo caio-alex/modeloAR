@@ -2,33 +2,33 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>AR.js Supermercado</title>
+    <title>AR.js com Hiro e JavaScript</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
   </head>
   <body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs="sourceType: webcam;">
-      
+
       <!-- Marcador Hiro -->
       <a-marker preset="hiro">
-
+        
         <!-- Gôndola -->
         <a-gltf-model
+          id="gondola"
           src="https://cdn.glitch.global/0a4976cf-50a4-4960-86ae-eaaffabb9833/prateleira2.glb?v=1744429524348"
           position="0 0 0"
           scale="0.02 0.02 0.02"
           rotation="0 180 0"
         ></a-gltf-model>
 
-        <!-- Produto (caixa representando suco) -->
+        <!-- Produto (caixa de suco) -->
         <a-box
+          id="produto"
           position="0 0.5 0.2"
           depth="0.1"
           height="0.2"
           width="0.1"
           color="orange"
-           rotation="0 0 0" 
-               animation="property: rotation; to: 0 360 0; loop: true; dur: 5000"
         ></a-box>
 
         <!-- Caixa de nome do produto -->
@@ -51,8 +51,28 @@
 
       <a-entity camera></a-entity>
     </a-scene>
+
+    <script>
+      // Função para aumentar a escala do produto
+      function aumentarProduto() {
+        const produto = document.querySelector('#produto');
+        let scale = produto.getAttribute('scale');
+        produto.setAttribute('scale', `${scale.x * 1.5} ${scale.y * 1.5} ${scale.z * 1.5}`);
+      }
+
+      // Função para mover a gôndola
+      function moverGondola() {
+        const gondola = document.querySelector('#gondola');
+        gondola.setAttribute('position', '0 0.5 1'); // Mover para frente
+      }
+
+      // Adicionando eventos de clique
+      document.querySelector('#produto').addEventListener('click', aumentarProduto);
+      document.querySelector('#gondola').addEventListener('click', moverGondola);
+    </script>
   </body>
 </html>
+
 
 
 
